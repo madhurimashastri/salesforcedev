@@ -1,0 +1,127 @@
+
+EX-22:
+Create a wrapper class ProductData with below data members
+productName
+price
+quantity
+
+Create a class ProductLineItem and declare member List<ProductData>
+and within constructor insert 5 different product data. Then display the same in VF.
+
+-------------------------------------------------------------------------------------------------------------------------------
+Wraper Class :ProductDataWraper 
+
+public class ProductDataWraper {
+    public  string  productName{get;set;} 
+    public decimal price{get;set;}
+    public Integer quantity{get;set;}
+    public boolean flag{get;set;}
+}
+
+
+
+=============================================================================================================================
+public class ProductLineItem {
+    
+    public List<ProductDataWraper>  productList{get;set;}
+    public List<ProductDataWraper>  SeletctedprodList{get;set;}
+    
+    
+    public   ProductLineItem(){
+        //Initialize the List.
+        productList=new List<ProductDataWraper>();
+        SeletctedprodList = new List<ProductDataWraper>();
+        
+        // create product data and Add to list.
+        ProductDataWraper p1= new ProductDataWraper();
+        p1.productName='Cell';
+        p1.price=5000;
+        p1.quantity=2;
+        p1.flag=false;
+        productList.add(p1);
+        
+        ProductDataWraper p2= new ProductDataWraper();
+        p2.productName='Laptop';
+        p2.price=50000;
+        p2.quantity=2;
+        p2.flag=false;
+        productList.add(p2);
+        
+        ProductDataWraper p3= new ProductDataWraper();
+        p3.productName='Tablet';
+        p3.price=15000;
+        p3.quantity=4;
+        p3.flag=false;
+        productList.add(p3);
+        
+        ProductDataWraper p4= new ProductDataWraper();
+        p4.productName='Tv';  
+        p4.price=60000;
+        p4.quantity=2;
+        p4.flag=false;
+        productList.add(p4);
+        
+        ProductDataWraper p5= new ProductDataWraper();
+        p5.productName='Mike';
+        p5.price=25000;
+        p5.quantity=3;
+        p5.flag=false;
+        productList.add(p5);
+        
+        
+    }
+        
+    public void Submit(){
+        for(ProductDataWraper pd :productList)
+            if(pd.flag==true){
+                SeletctedprodList.add(pd);
+                
+            }       
+        
+    }
+    
+    public void Reset(){
+        //To Refresh the datatable , Initilize the  list
+        SeletctedprodList=   new List<ProductDataWraper>();
+        
+        // uncheck selected checkbox.
+        for(ProductDataWraper pd :productList){
+            pd.flag=false;
+            
+        }
+    }
+}
+=======================================================================================================
+VisualForce Page Name:  ProductLineItemVF
+
+<apex:page   controller="ProductLineItem">
+    <apex:form>
+        <apex:pageBlock>
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="submit"  action="{!Submit}"  reRender="pbR"/>
+            </apex:pageBlockButtons>
+            <apex:dataTable value="{!productList}" var="n" rules="rows" cellspacing="10" cellpadding="10" border="1px">
+                <apex:column  headerValue="Select">
+                    <apex:inputCheckbox  value="{!n.flag}" />                    
+                </apex:column>
+                <apex:column  headerValue="Prduct Name"  value="{!n.productName}"/>                
+                <apex:column   headerValue="Price" value="{!n.price}"/>
+                <apex:column  headerValue="Quantity" value="{!n.quantity}"/>
+            </apex:dataTable>
+            
+            
+        </apex:pageBlock>
+        
+        <apex:pageBlock >
+            <apex:commandButton value="Reset" action="{!Reset}"/>
+            <apex:dataTable  id="pbR" value="{!SeletctedprodList}" var="n"   rules="rows" cellspacing="10" cellpadding="10" border="1px">
+                <apex:column  headerValue="Prduct Name"  value="{!n.productName}"/>                
+                <apex:column   headerValue="Price" value="{!n.price}"/>
+                <apex:column  headerValue="Quantity" value="{!n.quantity}"/>
+                
+            </apex:dataTable>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+</apex:page>

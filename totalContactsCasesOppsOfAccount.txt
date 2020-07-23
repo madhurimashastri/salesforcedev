@@ -1,0 +1,85 @@
+
+Display total cases, total contact, total opportunities for each account
+------------------------------------------------------------------------
+Customer Name  |   Total Cases      | Total Contacts    |  Total Opps
+-------------------------------------------------------------------------
+
+Wraper Class:  AccWrapperCon_case_opps
+....................................
+
+public class AccWrapperCon_case_opps {
+    public string accName{get;set;}
+    public Integer totalContacts{get;set;}
+    public Integer totalCases{get;set;}  
+    public Integer totalOpportunities{get;set;}  
+}
+
+
+------------------------------------------------
+
+
+Class: Acc_ConCaseOpps
+......................
+
+
+public class Acc_ConCaseOpps {
+   
+    public List<AccWrapperCon_case_opps> listofChildRecs {get;set;}
+    public List<Account> accList;
+
+    public Acc_ConCaseOpps(){
+        listofChildRecs= new List<AccWrapperCon_case_opps>();
+        getAllConCaseOppRecOfAcc();
+    }
+    public void getAllConCaseOppRecOfAcc(){
+        
+          accList=[Select name, (Select AccountID from Cases) allcases,(Select AccountID from Contacts ) allcontacts ,(Select AccountID From Opportunities)allOpps
+                         From Account LIMIT 10 ];
+
+        For(Account a :accList ){
+            Integer totalContacts=0;
+            Integer totalCases=0;
+            Integer totalOpps=0;
+            AccWrapperCon_case_opps aw= new AccWrapperCon_case_opps();
+            if(a.Contacts.Size()>0){
+                totalContacts=a.Contacts.Size();
+            }
+            if(a.Cases.Size()>0){
+                totalCases=a.Contacts.Size();
+            }
+            if(a.Opportunities.Size()>0){
+                totalOpps=a.Opportunities.Size();
+            }
+                aw.accName=a.Name;
+                aw.totalCases=totalCases;
+                aw.totalContacts=totalContacts;
+                aw.totalOpportunities= totalOpps;
+                
+            listofChildRecs.add(aw);
+        }
+
+    }
+}
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+VisualForce page :  Acc_ConCaseOppsVF
+.........................................
+
+<apex:page controller="Acc_ConCaseOpps" >
+    <apex:form>
+    <apex:sectionHeader title="Contacts ,Cases , Opportunites Of each Account Record"/>
+    <apex:pageBlock>
+    <apex:pageBlockTable value="{!listofChildRecs}"  var="acc">
+        <apex:column  headerValue="Customer Name" value="{!acc.accName}"></apex:column>
+        <apex:column  headerValue="Total Contacts" value="{!acc.totalContacts}"></apex:column>
+        <apex:column  headerValue="Total Cases" value="{!acc.totalCases}"></apex:column>
+        <apex:column  headerValue=" Total Opportunities" value="{!acc.totalOpportunities}"></apex:column>
+        </apex:pageBlockTable>    
+        
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

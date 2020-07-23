@@ -1,0 +1,82 @@
+Excercise:
+
+Display the total open cases, total closed cases for each account
+----------------------------------------------------------
+Customer Name  |   Open Cases      | Closed Cases    | 
+----------------------------------------------------------
+         
+
+===================================================================
+Solution :
+..................................................................
+
+Wraper Class:  AccWrapperOpenClose_case
+........................................
+
+public class AccWrapperOpenClose_case{
+    public String Name{get;set;}
+    public Integer TotalOpenCases{get;set;}
+    public Integer TotalClosedcases{get;set;}
+}
+-----------------------------------------------------------------------------
+Class name:  AccOpenClose_cases 
+................................
+
+
+public class AccOpenClose_cases {
+    Public List<Case> Caselist;
+    public List<AccWrapperOpenClose_case> listAccwrap{get;set;}
+    public   List<Account> accQueryresults;
+    public AccOpenClose_cases(){
+        listAccwrap= new  List<AccWrapperOpenClose_case>();
+        accQueryresults=[Select name, (Select status from cases)From Account Where ID in (Select accountId From Case)];
+        getOpencloseCases();
+    }
+    
+    public void getOpencloseCases(){        
+        
+        For(account a: accQueryresults){
+            AccWrapperOpenClose_case  aw= new AccWrapperOpenClose_case();
+            integer totalopen=0;
+            integer totalClose=0;
+            Caselist=a.cases;
+            
+            if(Caselist.size()>0){
+                for(case c : Caselist){
+                    if(c.Status=='Closed'){
+                        totalClose++;
+                    }
+                    else
+                    { 
+                        totalopen++;
+                    }
+                }
+                
+            }
+            aw.Name=a.name;
+            aw.TotalOpenCases=totalopen;
+            aw.TotalClosedcases=totalClose;
+            listAccwrap.add(aw);
+            
+        }
+        
+    }    
+}
+
+
+---------------------------------------------------------------------------------------------------
+VisualForcePage: AccWrapperOpenClose_caseVF
+.........................................
+
+<apex:page  controller="AccOpenClose_cases">
+    <apex:form>
+        <apex:sectionHeader title="Total Open and closed cases of each Account"/>
+        <apex:pageBlock>
+            <apex:pageBlockTable value="{!listAccwrap}" var="acc">
+                <apex:column  headerValue=" Customer Name" value="{!acc.Name}"></apex:column>
+                <apex:column  headerValue="Total Open Case " value="{!acc.TotalOpenCases}"></apex:column>
+                <apex:column  headerValue="Total Closed Case" value="{!acc.TotalClosedcases}"></apex:column>
+            </apex:pageBlockTable>            
+        </apex:pageBlock>        
+    </apex:form>
+</apex:page>

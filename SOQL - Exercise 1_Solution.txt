@@ -1,0 +1,183 @@
+1.Write a soql to fetch  all the account records with name,Industry fields .
+SOQL:  Select Name,Industry from Account
+
+2.Write a soql to Fetch all the contact records  with lastname, firstname, active fields
+SOQL: Select lastName,FirstName,active__c  from Contact
+
+3.Write a soql query to fetch all the Opportunity records Name,StageName,closeDate
+SOQL: Select Name,StageName,closeDate from Opportunity
+
+4.Write a soql query to fetch all user records with lastname, firstname
+SOQL: Select lastname,firstname from user 
+
+5.Write a soql query to fetch customer__c records with city__c,state__c,phone__c 
+SOQL: Select city__c, state__c,phone__c from customer__c
+
+6.Write a soql  to fetch name,industry ,phone from Accoutn and display it in the VF  page
+
+Class:  FetchALLAccounts
+------------------------- 
+public class FetchALLAccounts {
+    public list<Account> acclist {get;set;}
+    public FetchALLAccounts(){
+        
+        acclist= new  list<Account>();
+        acclist=  [Select name,industry ,phone from Account];
+    }
+    
+}
+
+VF Page: FetchALLAccountsVF
+-----------------------------
+<apex:page  controller="FetchALLAccounts">
+    <apex:form>
+        <apex:pageBlock>
+            <apex:dataTable value="{!acclist}" var="n"  cellpadding="5px" cellspacing="5px" border="2px">
+                <apex:column  headerValue="Comapany Name" value="{!n.name}"/>
+                <apex:column   headerValue="Industry" value="{!n.industry}"/>
+                <apex:column  headerValue="Industry" value="{!n.phone}"/>            
+                
+            </apex:dataTable>     
+                       
+        </apex:pageBlock>
+               
+    </apex:form>
+</apex:page>
+
+====================================================================
+7.Write the soql query to fetch data from opportunity object and display in the VF page
+Class: FetchOpportunities
+--------------------------
+public class FetchOpportunities {
+    public List<Opportunity> listOpp{get;set;}
+    public FetchOpportunities(){
+        listOpp = new List<Opportunity>();
+        listOpp= [Select Name,StageName,closeDate from Opportunity];
+        
+    }
+    
+}
+
+VF Page: FetchOpportunitiesVF
+------------------------------
+
+<apex:page  controller="FetchOpportunities">
+    <apex:form>    
+    <apex:dataTable value="{!listOpp}" var ="Op"  cellpadding="5px" cellspacing="5px" border="2px">
+        <apex:column headerValue="Name"  value="{!Op.Name}"/>
+         <apex:column headerValue="Stage Name"  value="{!Op.StageName}"/>
+         <apex:column headerValue="Close Date"  value="{!Op.closeDate}"/>
+        </apex:dataTable>
+    </apex:form>
+</apex:page>
+
+
+=============================================================================
+8.Write query to fetch one Account record  from Account object
+
+Account a= [Select Name,Industry from Account Limit 1];
+System.Debug(a);
+
+===================================================================
+
+9. Fetch 5 records from Account object 
+
+List<Account> acclist = [Select Name,Industry from Account Limit 5];
+
+System.Debug(acclist);
+====================================================================
+10.Fetch 10 records from Case object
+
+List<case> listCases=[select Subject ,casenumber from case Limit 10];
+system.Debug(listCases);
+
+======================================================================
+11.Return all  the opportunities  from 5th records 
+List<Opportunity> listOpp  = [Select Name,StageName,closeDate from Opportunity Offcet 5]; 
+system.Debug( listOpp);
+
+
+========================================================================
+12.write soql to fetch all the accounts from 10th records
+
+Select Name,Industry from Account Offcet 10
+
+==================================================================
+13.Write a soql to fetch all the account records in the accending order of name
+Select Name,Industry from Account order By Name Asc
+
+=============================================================
+14.Write a soql to fetch all the account records in the decending order of industry
+
+Select Name,Industry from Account order By industry Desc
+
+=============================================================================
+15.Write the soql to fetch last 10 opportunity records based on created date 
+
+Select Name,StageName,createdDate from Opportunity order By createdDate Desc Limit 10
+
+=============================================================================
+16. Write a soql to fetch last 10 opportunities based on closeDate 
+
+
+Select Name,StageName,closeDate from Opportunity order By closeDate Desc Limit 10
+======================================================================================
+
+17. Write a soql to fetch all the account records whose industry is banking 
+
+Select Name,Industry from Account Where Industry='banking'
+==================================================================================
+18. Write a soql to fetch all the case records whose origin is email
+
+Select Casenumber,Subject,Origin from Case where Origin='Email'
+
+==================================================================================
+19. Write soql to fetch the all opprotunties whose stage name is 'closed won' and amount is more than 50000
+
+Select Name,StageName ,amount from Opportunity Where Stagename='closed won' and amount>50000
+
+==================================================================================
+20. Fetch account records whose industry may energy, education, apparel, technology, consulting
+
+Select Name,Industry  from Account where Industry IN('energy', 'education', 'apparel', 'technology','consulting')
+
+======================================================================================
+21. Fetch contacts whose mailingCity is in hyd, chn, pune, delhi
+Select LastName,FirstName,Account.Name , mailingCity  from Contact where mailingCity IN('hyd', 'chn', 'pune', 'delhi')
+
+========================================================================================
+
+22. Get accounts whose name starts with Capital and ends with only 4 more characters 
+Select Name from Account where Name like A____
+
+=========================================================================================
+23.Get accounts whose name ends with 'org'.
+
+Select Name from Account where name Like '%org'
+
+==========================================================================================
+24.Get accounts that are created today
+
+Select Name,Industry from Account where createdDate=Today
+
+==========================================================================================
+25.Get accounts that are created this week
+
+Select Name,Industry from Account where CreatedDate=THIS_WEEK
+
+==================================================================================================
+26.Write a soql to fetch all the account records created in the last year 
+
+Select Name,Industry from Account where CreatedDate=LAST_YEAR
+
+===========================================================================================
+ 27. Write soql to fetch all the opportunity records which are going to closed in next 15 days 
+
+Select Name, CloseDate from opportunity where closeDate=NEXT_N_DAYS:15
+
+===================================================================================================
+28.Write a  soql to fetch all the application records which are Approved in last week
+
+Select AppType__c,Customername__c from Application__c  Where ApprovedDate__c =LAST_WEEK
+
+==================================================================================================

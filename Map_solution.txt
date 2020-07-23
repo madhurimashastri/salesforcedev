@@ -1,0 +1,62 @@
+Map<string,string> emp= new Map<string,string>{'111'=>'madhu','222'=>'Rima','333'=>'Madhuri'};
+   system.debug('emp :'+emp);
+if(emp.containsKey('333')){
+    
+    System.debug(emp.get('333'));
+}
+
+list<lead> leadlist=[select lastname,rating, annualRevenue,phone,company from lead  limit 5];
+
+System.debug(leadlist);
+
+-------------------------------------------------------------------------------------
+Map Ex:
+-------------------------------------------------------------------------------------------
+Solution :
+
+-----------------
+
+
+List<opportunity> opplist=[select name, stagename,amount,closedate from opportunity limit 5];
+Map<ID,SObject> mapOpplist1= new Map<ID,SObject>();
+for(opportunity opp : opplist){
+    mapOpplist1.put(opp.ID,opp);
+}
+
+|DEBUG|map of opp{0062v00001BO8TPAA1=Opportunity:{Name=abc1, StageName=Closed Won, Amount=1000000.00, CloseDate=2019-06-29 00:00:00, Id=0062v00001BO8TPAA1}, 0062v00001DRNpaAAH=Opportunity:{Name=Dickenson Mobile Generators, StageName=Qualification, Amount=15000.00, CloseDate=2019-05-01 00:00:00, Id=0062v00001DRNpaAAH}, 0062v00001NklpnAAB=Opportunity:{Name=0aaaOppforTriggerTest, StageName=Prospecting, CloseDate=2020-05-28 00:00:00, Id=0062v00001NklpnAAB}, 0062v00001NliJHAAZ=Opportunity:{Name=Opp1TCS, Stag
+
+
+List<opportunity> opplist=[select name, stagename,amount,closedate from opportunity limit 5];
+Map<ID,SObject> mapOpplist1= new Map<ID,SObject>();
+List<String> AllNames= new  List<String>();
+List<String> closedOpplist= new List<string>();
+Map<string,decimal> mapOppAmunt= new Map<string,decimal>();
+Map<string,SObject> mapnameASkey= Map<string,SObject>();
+decimal totalAmount=0.0;
+for(opportunity opp : opplist){
+    mapOpplist1.put(opp.ID,opp);
+    AllNames.add(opp.name);
+    if(opp.amount!=null){
+    totalAmount=totalAmount+opp.amount;
+        
+        if(opp.stagename=='Closed Won'){
+            closedOpplist.add(opp.name);
+        }
+        
+       mapOppAmunt.put(opp.name,opp.amount); 
+        mapnameASkey.put(opp.name,opp);
+        
+    }
+}
+system.debug('map of opp'+ mapOpplist1);
+system.debug('Total amunt '+ totalAmount);
+system.debug('list of closed opportunities'+ closedOpplist);
+ List<String> oppNames = new List<String>{'abc1','CTS','sfdcmeet','Opp1TCS','Hdfc'}; 
+     //mapnameASkey
+     for(string name: oppNames){
+         if(mapnameASkey.contains(s)){
+            system.debug('mached records'+ mapnameASkey.get(s));
+         }
+     }
+
+

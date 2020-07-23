@@ -1,0 +1,38 @@
+
+Exercise
+Get name, stageName, closeData, amount of all opportunities from the database and display in the Vf page.
+--------------------------------------------------------------------------------------------------------
+Class:GetAllOpportunitiesDBEX 
+public class GetAllOpportunitiesDBEX {
+    public List<opportunity> Opps{get;set;} 
+   public GetAllOpportunitiesDBEX(){
+        Opps= new List<opportunity>();
+       
+       
+        Opps= [select name, stageName, closeDate, amount from opportunity];
+        
+    }    
+}
+
+VF Page: GetAllOpportunitiesDBEX
+<apex:page  controller="GetAllOpportunitiesDBEX" >    
+    <apex:form>
+        <apex:pageBlock  title="List Of Opportunities">            
+            <apex:pageBlockTable value="{!Opps}" var="n">
+                <apex:column value="{!n.name}"/>
+                <apex:column value="{!n.stageName}"/>
+                <apex:column value="{!n.closeDate}"/>
+                <apex:column value="{!n.amount}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+
+
+=================================================================================================================
+Exercise
+Get name, stageName, closeData, amount of all opportunities and perform below items
+  i. display the name one by one in the log
+ ii. get all the stageName into another list of string
+iii. sum up all the closed opportunities 
+iv. sum up all the open opportunities 

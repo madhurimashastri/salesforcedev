@@ -1,0 +1,4 @@
+select name,Industry, (select Name, phone from contacts) from account;
+select name,Industry,(select name,phone from contacts ) from account where ID in (select accountId from contact)
+select  name,Industry,(select name,phone from contacts) from account where id  not in(select accountID from contact)
+select name,Industry,(select name,phone from contacts where phone!=null and email!=null ) from account where ID in (select accountId from contact)

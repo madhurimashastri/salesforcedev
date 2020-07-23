@@ -1,0 +1,127 @@
+
+  EX_23 Solution:  
+------------------------------------------------------------------------
+WraperClass: AccountWrapper 
+----------------------------
+
+public class AccountWrapper {
+    public  Account  acc{get;set;}
+    public boolean flag{get;set;}
+
+}
+------------------------------------------------------------------------
+Class:AccountListcls 
+--------------------
+
+public class AccountListcls {
+    public list<AccountWrapper> accts{get;set;}
+    public list<Account> Selectedaccts{get;set;}
+    
+    public boolean selectall{get;set;}
+    public string test{get;set;}
+    public AccountListcls(){
+        test='';
+        
+        accts=  new  list<AccountWrapper>();
+        
+        AccountWrapper aw1= new AccountWrapper();        
+        account a1= new account(name='tcs', industry='Energy', rating='hot', phone='765383739') ;
+        aw1.acc=a1;
+        aw1.flag=false;
+        
+        AccountWrapper aw2= new AccountWrapper(); 
+        account a2= new account(name='cts', industry='Education', rating='hot', phone='878383739') ;
+        aw2.acc=a2;
+        aw2.flag=false;
+        
+        AccountWrapper aw3= new AccountWrapper();             
+        account a3= new account(name='Reliance', industry='Energy', rating='hot', phone='98763739');
+        aw3.acc=a3;
+        aw3.flag=false;
+        
+        AccountWrapper aw4= new AccountWrapper();         
+        account a4= new account(name='Tata', industry='Education', rating='hot', phone='6473930223'); 
+        aw4.acc=a4;
+        aw4.flag=false;
+        
+        AccountWrapper aw5= new AccountWrapper();         
+        account a5= new account(name='abc', industry='Education', rating='hot', phone='77365383739'); 
+        aw5.acc=a5;
+        aw5.flag=false;
+        
+        accts.add(aw1);
+        accts.add(aw2);
+        accts.add(aw3);
+        accts.add(aw4);
+        accts.add(aw5);
+    }
+    
+    
+    public void selectAll()
+    {
+        Selectedaccts= new list<account>();
+        for( AccountWrapper aw :accts){
+            aw.flag=true;
+            Selectedaccts.add(aw.acc);
+        }
+        
+    }
+    
+    public void submit(){
+        for( AccountWrapper aw :accts){
+            if(selectall==true){
+                aw.flag=true;
+                Selectedaccts.add(aw.acc);
+            }
+            else{
+                aw.flag=false;
+            }
+        }
+        
+    }
+}
+
+-------------------------------------------------------------------------------------------
+VisualForcePage : AccountListclsVF
+----------------------------------
+
+
+
+<apex:page   controller="AccountListcls" >
+    <apex:form>
+        <apex:pageBlock>
+            <apex:inputCheckbox  value="{!selectall}" >
+                <apex:actionSupport  event="onclick" action="{!selectAll}" reRender="dtaccts" />
+                
+            </apex:inputCheckbox>
+            <apex:commandButton value="submit" action="{!submit}" reRender="accdtl" />
+            <apex:pageBlockSection>
+                
+                <apex:dataTable value="{!accts}" var="n"  cellspacing="5" cellpadding="5" border="1px"  id="dtaccts">
+                    <apex:column  headerValue="select"> 
+                        <apex:inputCheckbox value="{!n.flag}"/>
+                    </apex:column>  
+                    <apex:column  headerValue="Company name" value="{!n.acc.name}"/>
+                    <apex:column  headerValue="Industry" value="{!n.acc.industry}"/>
+                    <apex:column  headerValue="Rating" value="{!n.acc.rating}"/>
+                    <apex:column  headerValue="Phone" value="{!n.acc.phone}"/>
+                    
+                </apex:dataTable>
+                <apex:outputPanel   id="accdtl">
+                    
+                    <apex:dataTable  value="{!Selectedaccts}" var="a"  cellspacing="5" cellpadding="5" border="1px">
+                        
+                        <apex:column  headerValue="Company name" value="{!a.name}"/>
+                        <apex:column  headerValue="Industry" value="{!a.industry}"/>
+                        <apex:column  headerValue="Rating" value="{!a.rating}"/>
+                        <apex:column  headerValue="Phone" value="{!a.phone}"/>
+                        
+                    </apex:dataTable>
+                    
+                </apex:outputPanel>
+                
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
